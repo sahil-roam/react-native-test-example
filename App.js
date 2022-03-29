@@ -82,9 +82,17 @@ export default function App() {
     Roam.startTrip(tripId, "test-trip", 
     success => {
       console.log(success)
+      Notifications.postLocalNotification({
+        body: JSON.stringify(success),
+        title: 'Trip',
+    })
     },
     error => {
       console.log(error)
+      Notifications.postLocalNotification({
+        body: JSON.stringify(error),
+        title: 'Trip Error',
+    })
     }
     )
   }
@@ -94,9 +102,17 @@ export default function App() {
     Roam.stopTrip(tripId, 
     success => {
       console.log(success)
+      Notifications.postLocalNotification({
+        body: JSON.stringify(success),
+        title: 'Trip',
+    })
     },
     error => {
       console.log(error)
+      Notifications.postLocalNotification({
+        body: JSON.stringify(error),
+        title: 'Trip Error',
+    })
     }
     )
   }
@@ -106,12 +122,52 @@ export default function App() {
     Roam.getTripSummary(tripId, 
     success => {
       console.log(success)
+      Toast.show(JSON.stringify(success), Toast.LONG)
     },
     error => {
       console.log(error)
+      Toast.show(JSON.stringify(error))
     }
     )
   }
+
+
+  const pauseTrip = () => {
+    Roam.pauseTrip(tripId,
+      success => {
+        Notifications.postLocalNotification({
+          body: JSON.stringify(success),
+          title: 'Trip',
+      })
+      },
+      error => {
+        Notifications.postLocalNotification({
+          body: JSON.stringify(error),
+          title: 'Trip Error',
+      })
+      }
+      )
+  }
+
+
+  const resumeTrip = () => {
+    Roam.resumeTrip(tripId,
+      success => {
+        Notifications.postLocalNotification({
+          body: JSON.stringify(success),
+          title: 'Trip',
+      })
+    },
+      error => {
+        Notifications.postLocalNotification({
+          body: JSON.stringify(error),
+          title: 'Trip Error',
+      })
+      }
+      )
+  }
+
+
 
 
 
@@ -119,6 +175,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={backgroundStyle}>
+      <ScrollView>
       <Text style={styles.button1}>UserId: {userId}</Text>
       <Text style={styles.button1}>TripId: {tripId}</Text>
       <TouchableHighlight 
@@ -179,6 +236,20 @@ export default function App() {
 
       <TouchableHighlight 
       style={styles.button1}
+      onPress={() => {pauseTrip()}}
+      >
+        <Text>Pause Trip</Text>
+      </TouchableHighlight>
+
+      <TouchableHighlight 
+      style={styles.button1}
+      onPress={() => {resumeTrip()}}
+      >
+        <Text>Resume Trip</Text>
+      </TouchableHighlight>
+
+      <TouchableHighlight 
+      style={styles.button1}
       onPress={() => {stopTrip()}}
       >
         <Text>Stop Trip</Text>
@@ -191,6 +262,7 @@ export default function App() {
         <Text>Trip Summary</Text>
       </TouchableHighlight>
 
+      </ScrollView>
       
     </SafeAreaView>
   );
@@ -202,7 +274,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   button1: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 10,
     marginBottom: 20,
     color: 'blue',
