@@ -16,11 +16,7 @@ export const permissionTask = () => {
 }
 
 
-export function toggleListener(){
-    Roam.toggleListener(true, false, (success) => {
-        console.log(success)
-    })
-}
+
 
 export const startListener = () => {
     Roam.startListener("location", (location) => {

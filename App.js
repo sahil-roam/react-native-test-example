@@ -66,12 +66,6 @@ export default function App() {
         <Text>Location Permission</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight 
-      style={styles.button1}
-      onPress={() => {toggleListener()}}
-      >
-        <Text>Toggle Listener</Text>
-      </TouchableHighlight>
 
       <TouchableHighlight 
       style={styles.button1}
