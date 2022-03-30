@@ -25,18 +25,11 @@ export function toggleListener(){
 export const startListener = () => {
     Roam.startListener("location", (location) => {
         console.log(location)
-        // Notifications.postLocalNotification({
-        //     body: JSON.stringify(location),
-        //     title: 'Location Received',
-        // })
-        // PushNotificationIOS.addNotificationRequest({
-        //     fireDate: new Date(),
-        //     id: '123',
-        //     title: 'Location Received',
-        //     body: 'Location'
-        //   })
-        
-        //Toast.show(`Location Received: ${JSON.stringify(location)}`, Toast.SHORT);
+        Notifications.postLocalNotification({
+            body: JSON.stringify(location),
+            title: 'Location Received',
+        })
+    
       });
 }
 

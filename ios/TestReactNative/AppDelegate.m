@@ -32,7 +32,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [Roam initialize:@"411076002016f3a85d9299806df465f24fe49feea904eb75076bbf0d8e8d5834" :NULL :NULL];
+  [Roam initialize:@"" :NULL :NULL];
   [RNNotifications startMonitorNotifications];
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
