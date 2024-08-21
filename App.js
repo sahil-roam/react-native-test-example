@@ -6,7 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import {React} from react;
+
 import {
   SafeAreaView,
   ScrollView,
@@ -14,16 +15,12 @@ import {
   Text,
   useColorScheme,
   TouchableHighlight,
+  Platform,
+  View
 } from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
 
-import * as RoamHelper from './RoamHelper';
-import { toggleListener } from './RoamHelper';
-import { useEffect } from 'react';
-import { Notifications } from 'react-native-notifications';
+import Roam from 'roam-reactnative';
 
 
 export default function App() {
@@ -33,22 +30,40 @@ export default function App() {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const requestPermission = () => {
+    Roam.requestPermission()
+  }
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Notifications.registerRemoteNotifications();
+  const requestBackgroundLocationPermission = () => {
+    Roam.requestBackgroundLocationPermission()
+  }
+
+  const startTracking = () => {
+
+    if(Platform.OS === 'android'){
+      Roam.startTracking(Roam.TrackingMode.ACTIVE)
+      //Roam.startTracking(Roam.TrackingMode.BALANCED)
+      //Roam.startTracking(Roam.TrackingMode.PASSIVE)
+      //Roam.startSelfTrackingDistanceInterval(5, 20, 50)
+      //Roam.startSelfTrackingTimeInterval(5, 50)
+    } else {
+      Roam.startTracking(Roam.TrackingMode.ACTIVE)
+      //Roam.startTracking(Roam.TrackingMode.BALANCED)
+      //Roam.startTracking(Roam.TrackingMode.PASSIVE)
+      // Roam.startTrackingCustom(
+      //   true,
+      //   false,
+      //   Roam.ActivityType.FITNESS,
+      //   Roam.DesiredAccuracyIOS.BEST,
+      //   true,
+      //   5,
+      //   50,
+      //   5
+      //   )
     }
-  }, [])
 
 
-  /*
-  User flow:
-  1. Notification permission popup
-  2. Location permission
-  3. Toggle listener
-  4. Start listener
-  5. Start tracking
-  */
+  }
 
 
 
@@ -61,29 +76,34 @@ export default function App() {
       <ScrollView>
       <TouchableHighlight 
       style={styles.button1}
-      onPress={() => {RoamHelper.permissionTask()}}
+      onPress={() => {requestPermission()}}
       >
         <Text>Location Permission</Text>
       </TouchableHighlight>
 
-
-      <TouchableHighlight 
+      {
+        Platform.OS === 'android'
+        ?
+        <TouchableHighlight 
       style={styles.button1}
-      onPress={() => {RoamHelper.startListener()}}
+      onPress={() => {requestBackgroundLocationPermission()}}
       >
-        <Text>Start Listener</Text>
+        <Text>Background Location Permission</Text>
       </TouchableHighlight>
+      : <View></View>
+      }
+
       
       <TouchableHighlight 
       style={styles.button1}
-      onPress={() => {RoamHelper.startTracking()}}
+      onPress={() => {startTracking()}}
       >
         <Text>Start Tracking</Text>
       </TouchableHighlight>
 
       <TouchableHighlight 
       style={styles.button1}
-      onPress={() => {RoamHelper.stopTracking()}}
+      onPress={() => {Roam.stopTracking()}}
       >
         <Text>Stop Tracking</Text>
       </TouchableHighlight>
